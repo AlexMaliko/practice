@@ -40,8 +40,6 @@ namespace WindowsFormsApp1 {
         
         private global::System.Data.DataRelation relationЗаказПозиции;
         
-        private global::System.Data.DataRelation relationМенюПозиции;
-        
         private global::System.Data.DataRelation relationСменыСостав;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
@@ -324,7 +322,6 @@ namespace WindowsFormsApp1 {
             }
             this.relationСменыЗаказ = this.Relations["СменыЗаказ"];
             this.relationЗаказПозиции = this.Relations["ЗаказПозиции"];
-            this.relationМенюПозиции = this.Relations["МенюПозиции"];
             this.relationСменыСостав = this.Relations["СменыСостав"];
         }
         
@@ -356,10 +353,6 @@ namespace WindowsFormsApp1 {
                         this.tableЗаказ.Код_заказаColumn}, new global::System.Data.DataColumn[] {
                         this.tableПозиции.Код_заказаColumn}, false);
             this.Relations.Add(this.relationЗаказПозиции);
-            this.relationМенюПозиции = new global::System.Data.DataRelation("МенюПозиции", new global::System.Data.DataColumn[] {
-                        this.tableМеню.Код_блюдаColumn}, new global::System.Data.DataColumn[] {
-                        this.tableПозиции.Код_блюдаColumn}, false);
-            this.Relations.Add(this.relationМенюПозиции);
             this.relationСменыСостав = new global::System.Data.DataRelation("СменыСостав", new global::System.Data.DataColumn[] {
                         this.tableСмены.Код_сменыColumn}, new global::System.Data.DataColumn[] {
                         this.tableСостав.Код_сменыColumn}, false);
@@ -667,9 +660,9 @@ namespace WindowsFormsApp1 {
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnКод_заказа}, true));
                 this.columnКод_заказа.AutoIncrement = true;
-                this.columnКод_заказа.AutoIncrementSeed = -1;
-                this.columnКод_заказа.AutoIncrementStep = -1;
+                this.columnКод_заказа.AutoIncrementSeed = 1;
                 this.columnКод_заказа.AllowDBNull = false;
+                this.columnКод_заказа.ReadOnly = true;
                 this.columnКод_заказа.Unique = true;
                 this.columnСтатус.MaxLength = 255;
             }
@@ -1085,11 +1078,11 @@ namespace WindowsFormsApp1 {
             
             private global::System.Data.DataColumn columnКод_заказа;
             
-            private global::System.Data.DataColumn columnКод_блюда;
-            
             private global::System.Data.DataColumn columnКоличество;
             
             private global::System.Data.DataColumn columnСтатус;
+            
+            private global::System.Data.DataColumn columnБлюдо;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -1142,14 +1135,6 @@ namespace WindowsFormsApp1 {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn Код_блюдаColumn {
-                get {
-                    return this.columnКод_блюда;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public global::System.Data.DataColumn КоличествоColumn {
                 get {
                     return this.columnКоличество;
@@ -1161,6 +1146,14 @@ namespace WindowsFormsApp1 {
             public global::System.Data.DataColumn СтатусColumn {
                 get {
                     return this.columnСтатус;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn БлюдоColumn {
+                get {
+                    return this.columnБлюдо;
                 }
             }
             
@@ -1201,19 +1194,16 @@ namespace WindowsFormsApp1 {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public ПозицииRow AddПозицииRow(ЗаказRow parentЗаказRowByЗаказПозиции, МенюRow parentМенюRowByМенюПозиции, string Количество, string Статус) {
+            public ПозицииRow AddПозицииRow(ЗаказRow parentЗаказRowByЗаказПозиции, string Количество, string Статус, string Блюдо) {
                 ПозицииRow rowПозицииRow = ((ПозицииRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
                         null,
-                        null,
                         Количество,
-                        Статус};
+                        Статус,
+                        Блюдо};
                 if ((parentЗаказRowByЗаказПозиции != null)) {
                     columnValuesArray[1] = parentЗаказRowByЗаказПозиции[0];
-                }
-                if ((parentМенюRowByМенюПозиции != null)) {
-                    columnValuesArray[2] = parentМенюRowByМенюПозиции[0];
                 }
                 rowПозицииRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowПозицииRow);
@@ -1246,9 +1236,9 @@ namespace WindowsFormsApp1 {
             internal void InitVars() {
                 this.columnКод_позиции = base.Columns["Код_позиции"];
                 this.columnКод_заказа = base.Columns["Код_заказа"];
-                this.columnКод_блюда = base.Columns["Код_блюда"];
                 this.columnКоличество = base.Columns["Количество"];
                 this.columnСтатус = base.Columns["Статус"];
+                this.columnБлюдо = base.Columns["Блюдо"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1258,21 +1248,22 @@ namespace WindowsFormsApp1 {
                 base.Columns.Add(this.columnКод_позиции);
                 this.columnКод_заказа = new global::System.Data.DataColumn("Код_заказа", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnКод_заказа);
-                this.columnКод_блюда = new global::System.Data.DataColumn("Код_блюда", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnКод_блюда);
                 this.columnКоличество = new global::System.Data.DataColumn("Количество", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnКоличество);
                 this.columnСтатус = new global::System.Data.DataColumn("Статус", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnСтатус);
+                this.columnБлюдо = new global::System.Data.DataColumn("Блюдо", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnБлюдо);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnКод_позиции}, true));
                 this.columnКод_позиции.AutoIncrement = true;
-                this.columnКод_позиции.AutoIncrementSeed = -1;
-                this.columnКод_позиции.AutoIncrementStep = -1;
+                this.columnКод_позиции.AutoIncrementSeed = 1;
                 this.columnКод_позиции.AllowDBNull = false;
+                this.columnКод_позиции.ReadOnly = true;
                 this.columnКод_позиции.Unique = true;
                 this.columnКоличество.MaxLength = 255;
                 this.columnСтатус.MaxLength = 255;
+                this.columnБлюдо.MaxLength = 255;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2515,17 +2506,6 @@ namespace WindowsFormsApp1 {
             public void SetНазваниеNull() {
                 this[this.tableМеню.НазваниеColumn] = global::System.Convert.DBNull;
             }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public ПозицииRow[] GetПозицииRows() {
-                if ((this.Table.ChildRelations["МенюПозиции"] == null)) {
-                    return new ПозицииRow[0];
-                }
-                else {
-                    return ((ПозицииRow[])(base.GetChildRows(this.Table.ChildRelations["МенюПозиции"])));
-                }
-            }
         }
         
         /// <summary>
@@ -2571,22 +2551,6 @@ namespace WindowsFormsApp1 {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public int Код_блюда {
-                get {
-                    try {
-                        return ((int)(this[this.tableПозиции.Код_блюдаColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("Значение для столбца \'Код_блюда\' в таблице \'Позиции\' равно DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableПозиции.Код_блюдаColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public string Количество {
                 get {
                     try {
@@ -2619,23 +2583,28 @@ namespace WindowsFormsApp1 {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public string Блюдо {
+                get {
+                    try {
+                        return ((string)(this[this.tableПозиции.БлюдоColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("Значение для столбца \'Блюдо\' в таблице \'Позиции\' равно DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableПозиции.БлюдоColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public ЗаказRow ЗаказRow {
                 get {
                     return ((ЗаказRow)(this.GetParentRow(this.Table.ParentRelations["ЗаказПозиции"])));
                 }
                 set {
                     this.SetParentRow(value, this.Table.ParentRelations["ЗаказПозиции"]);
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public МенюRow МенюRow {
-                get {
-                    return ((МенюRow)(this.GetParentRow(this.Table.ParentRelations["МенюПозиции"])));
-                }
-                set {
-                    this.SetParentRow(value, this.Table.ParentRelations["МенюПозиции"]);
                 }
             }
             
@@ -2649,18 +2618,6 @@ namespace WindowsFormsApp1 {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetКод_заказаNull() {
                 this[this.tableПозиции.Код_заказаColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsКод_блюдаNull() {
-                return this.IsNull(this.tableПозиции.Код_блюдаColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetКод_блюдаNull() {
-                this[this.tableПозиции.Код_блюдаColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2685,6 +2642,18 @@ namespace WindowsFormsApp1 {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public void SetСтатусNull() {
                 this[this.tableПозиции.СтатусColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsБлюдоNull() {
+                return this.IsNull(this.tableПозиции.БлюдоColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetБлюдоNull() {
+                this[this.tableПозиции.БлюдоColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -4082,49 +4051,49 @@ namespace WindowsFormsApp1.dbDataSetTableAdapters {
             tableMapping.DataSetTable = "Позиции";
             tableMapping.ColumnMappings.Add("Код_позиции", "Код_позиции");
             tableMapping.ColumnMappings.Add("Код_заказа", "Код_заказа");
-            tableMapping.ColumnMappings.Add("Код_блюда", "Код_блюда");
             tableMapping.ColumnMappings.Add("Количество", "Количество");
             tableMapping.ColumnMappings.Add("Статус", "Статус");
+            tableMapping.ColumnMappings.Add("Блюдо", "Блюдо");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.OleDb.OleDbCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM `Позиции` WHERE ((`Код_позиции` = ?) AND ((? = 1 AND `Код_заказа` IS NULL) OR (`Код_заказа` = ?)) AND ((? = 1 AND `Код_блюда` IS NULL) OR (`Код_блюда` = ?)) AND ((? = 1 AND `Количество` IS NULL) OR (`Количество` = ?)) AND ((? = 1 AND `Статус` IS NULL) OR (`Статус` = ?)))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM `Позиции` WHERE ((`Код_позиции` = ?) AND ((? = 1 AND `Код_заказа` IS NULL) OR (`Код_заказа` = ?)) AND ((? = 1 AND `Количество` IS NULL) OR (`Количество` = ?)) AND ((? = 1 AND `Статус` IS NULL) OR (`Статус` = ?)) AND ((? = 1 AND `Блюдо` IS NULL) OR (`Блюдо` = ?)))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Код_позиции", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_позиции", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_Код_заказа", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_заказа", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Код_заказа", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_заказа", global::System.Data.DataRowVersion.Original, false, null));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_Код_блюда", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_блюда", global::System.Data.DataRowVersion.Original, true, null));
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Код_блюда", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_блюда", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_Количество", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Количество", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Количество", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Количество", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_Статус", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Статус", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Статус", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Статус", global::System.Data.DataRowVersion.Original, false, null));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_Блюдо", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Блюдо", global::System.Data.DataRowVersion.Original, true, null));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Блюдо", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Блюдо", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.InsertCommand = new global::System.Data.OleDb.OleDbCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO `Позиции` (`Код_заказа`, `Код_блюда`, `Количество`, `Статус`) VALUES " +
-                "(?, ?, ?, ?)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO `Позиции` (`Код_заказа`, `Количество`, `Статус`, `Блюдо`) VALUES (?, " +
+                "?, ?, ?)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Код_заказа", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_заказа", global::System.Data.DataRowVersion.Current, false, null));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Код_блюда", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_блюда", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Количество", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Количество", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Статус", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Статус", global::System.Data.DataRowVersion.Current, false, null));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Блюдо", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Блюдо", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand = new global::System.Data.OleDb.OleDbCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE `Позиции` SET `Код_заказа` = ?, `Код_блюда` = ?, `Количество` = ?, `Статус` = ? WHERE ((`Код_позиции` = ?) AND ((? = 1 AND `Код_заказа` IS NULL) OR (`Код_заказа` = ?)) AND ((? = 1 AND `Код_блюда` IS NULL) OR (`Код_блюда` = ?)) AND ((? = 1 AND `Количество` IS NULL) OR (`Количество` = ?)) AND ((? = 1 AND `Статус` IS NULL) OR (`Статус` = ?)))";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE `Позиции` SET `Код_заказа` = ?, `Количество` = ?, `Статус` = ?, `Блюдо` = ? WHERE ((`Код_позиции` = ?) AND ((? = 1 AND `Код_заказа` IS NULL) OR (`Код_заказа` = ?)) AND ((? = 1 AND `Количество` IS NULL) OR (`Количество` = ?)) AND ((? = 1 AND `Статус` IS NULL) OR (`Статус` = ?)) AND ((? = 1 AND `Блюдо` IS NULL) OR (`Блюдо` = ?)))";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Код_заказа", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_заказа", global::System.Data.DataRowVersion.Current, false, null));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Код_блюда", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_блюда", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Количество", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Количество", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Статус", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Статус", global::System.Data.DataRowVersion.Current, false, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Блюдо", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Блюдо", global::System.Data.DataRowVersion.Current, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Код_позиции", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_позиции", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_Код_заказа", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_заказа", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Код_заказа", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_заказа", global::System.Data.DataRowVersion.Original, false, null));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_Код_блюда", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_блюда", global::System.Data.DataRowVersion.Original, true, null));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Код_блюда", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Код_блюда", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_Количество", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Количество", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Количество", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Количество", global::System.Data.DataRowVersion.Original, false, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_Статус", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Статус", global::System.Data.DataRowVersion.Original, true, null));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Статус", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Статус", global::System.Data.DataRowVersion.Original, false, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("IsNull_Блюдо", global::System.Data.OleDb.OleDbType.Integer, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Блюдо", global::System.Data.DataRowVersion.Original, true, null));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.OleDb.OleDbParameter("Original_Блюдо", global::System.Data.OleDb.OleDbType.VarWChar, 0, global::System.Data.ParameterDirection.Input, ((byte)(0)), ((byte)(0)), "Блюдо", global::System.Data.DataRowVersion.Original, false, null));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4140,7 +4109,7 @@ namespace WindowsFormsApp1.dbDataSetTableAdapters {
             this._commandCollection = new global::System.Data.OleDb.OleDbCommand[1];
             this._commandCollection[0] = new global::System.Data.OleDb.OleDbCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT Код_позиции, Код_заказа, Код_блюда, Количество, Статус FROM Позиции";
+            this._commandCollection[0].CommandText = "SELECT [Код_позиции], [Код_заказа], Количество, Статус, Блюдо FROM Позиции";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -4201,7 +4170,7 @@ namespace WindowsFormsApp1.dbDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_Код_позиции, global::System.Nullable<int> Original_Код_заказа, global::System.Nullable<int> Original_Код_блюда, string Original_Количество, string Original_Статус) {
+        public virtual int Delete(int Original_Код_позиции, global::System.Nullable<int> Original_Код_заказа, string Original_Количество, string Original_Статус, string Original_Блюдо) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_Код_позиции));
             if ((Original_Код_заказа.HasValue == true)) {
                 this.Adapter.DeleteCommand.Parameters[1].Value = ((object)(0));
@@ -4211,29 +4180,29 @@ namespace WindowsFormsApp1.dbDataSetTableAdapters {
                 this.Adapter.DeleteCommand.Parameters[1].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
-            if ((Original_Код_блюда.HasValue == true)) {
-                this.Adapter.DeleteCommand.Parameters[3].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_Код_блюда.Value));
-            }
-            else {
+            if ((Original_Количество == null)) {
                 this.Adapter.DeleteCommand.Parameters[3].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[4].Value = global::System.DBNull.Value;
             }
-            if ((Original_Количество == null)) {
+            else {
+                this.Adapter.DeleteCommand.Parameters[3].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[4].Value = ((string)(Original_Количество));
+            }
+            if ((Original_Статус == null)) {
                 this.Adapter.DeleteCommand.Parameters[5].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[6].Value = global::System.DBNull.Value;
             }
             else {
                 this.Adapter.DeleteCommand.Parameters[5].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[6].Value = ((string)(Original_Количество));
+                this.Adapter.DeleteCommand.Parameters[6].Value = ((string)(Original_Статус));
             }
-            if ((Original_Статус == null)) {
+            if ((Original_Блюдо == null)) {
                 this.Adapter.DeleteCommand.Parameters[7].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[8].Value = global::System.DBNull.Value;
             }
             else {
                 this.Adapter.DeleteCommand.Parameters[7].Value = ((object)(0));
-                this.Adapter.DeleteCommand.Parameters[8].Value = ((string)(Original_Статус));
+                this.Adapter.DeleteCommand.Parameters[8].Value = ((string)(Original_Блюдо));
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -4255,30 +4224,30 @@ namespace WindowsFormsApp1.dbDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(global::System.Nullable<int> Код_заказа, global::System.Nullable<int> Код_блюда, string Количество, string Статус) {
+        public virtual int Insert(global::System.Nullable<int> Код_заказа, string Количество, string Статус, string Блюдо) {
             if ((Код_заказа.HasValue == true)) {
                 this.Adapter.InsertCommand.Parameters[0].Value = ((int)(Код_заказа.Value));
             }
             else {
                 this.Adapter.InsertCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
-            if ((Код_блюда.HasValue == true)) {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((int)(Код_блюда.Value));
-            }
-            else {
+            if ((Количество == null)) {
                 this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
-            if ((Количество == null)) {
+            else {
+                this.Adapter.InsertCommand.Parameters[1].Value = ((string)(Количество));
+            }
+            if ((Статус == null)) {
                 this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.InsertCommand.Parameters[2].Value = ((string)(Количество));
+                this.Adapter.InsertCommand.Parameters[2].Value = ((string)(Статус));
             }
-            if ((Статус == null)) {
+            if ((Блюдо == null)) {
                 this.Adapter.InsertCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((string)(Статус));
+                this.Adapter.InsertCommand.Parameters[3].Value = ((string)(Блюдо));
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -4300,30 +4269,30 @@ namespace WindowsFormsApp1.dbDataSetTableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(global::System.Nullable<int> Код_заказа, global::System.Nullable<int> Код_блюда, string Количество, string Статус, int Original_Код_позиции, global::System.Nullable<int> Original_Код_заказа, global::System.Nullable<int> Original_Код_блюда, string Original_Количество, string Original_Статус) {
+        public virtual int Update(global::System.Nullable<int> Код_заказа, string Количество, string Статус, string Блюдо, int Original_Код_позиции, global::System.Nullable<int> Original_Код_заказа, string Original_Количество, string Original_Статус, string Original_Блюдо) {
             if ((Код_заказа.HasValue == true)) {
                 this.Adapter.UpdateCommand.Parameters[0].Value = ((int)(Код_заказа.Value));
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
-            if ((Код_блюда.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(Код_блюда.Value));
-            }
-            else {
+            if ((Количество == null)) {
                 this.Adapter.UpdateCommand.Parameters[1].Value = global::System.DBNull.Value;
             }
-            if ((Количество == null)) {
+            else {
+                this.Adapter.UpdateCommand.Parameters[1].Value = ((string)(Количество));
+            }
+            if ((Статус == null)) {
                 this.Adapter.UpdateCommand.Parameters[2].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(Количество));
+                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(Статус));
             }
-            if ((Статус == null)) {
+            if ((Блюдо == null)) {
                 this.Adapter.UpdateCommand.Parameters[3].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[3].Value = ((string)(Статус));
+                this.Adapter.UpdateCommand.Parameters[3].Value = ((string)(Блюдо));
             }
             this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(Original_Код_позиции));
             if ((Original_Код_заказа.HasValue == true)) {
@@ -4334,29 +4303,29 @@ namespace WindowsFormsApp1.dbDataSetTableAdapters {
                 this.Adapter.UpdateCommand.Parameters[5].Value = ((object)(1));
                 this.Adapter.UpdateCommand.Parameters[6].Value = global::System.DBNull.Value;
             }
-            if ((Original_Код_блюда.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[7].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_Код_блюда.Value));
-            }
-            else {
+            if ((Original_Количество == null)) {
                 this.Adapter.UpdateCommand.Parameters[7].Value = ((object)(1));
                 this.Adapter.UpdateCommand.Parameters[8].Value = global::System.DBNull.Value;
             }
-            if ((Original_Количество == null)) {
+            else {
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[8].Value = ((string)(Original_Количество));
+            }
+            if ((Original_Статус == null)) {
                 this.Adapter.UpdateCommand.Parameters[9].Value = ((object)(1));
                 this.Adapter.UpdateCommand.Parameters[10].Value = global::System.DBNull.Value;
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[9].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[10].Value = ((string)(Original_Количество));
+                this.Adapter.UpdateCommand.Parameters[10].Value = ((string)(Original_Статус));
             }
-            if ((Original_Статус == null)) {
+            if ((Original_Блюдо == null)) {
                 this.Adapter.UpdateCommand.Parameters[11].Value = ((object)(1));
                 this.Adapter.UpdateCommand.Parameters[12].Value = global::System.DBNull.Value;
             }
             else {
                 this.Adapter.UpdateCommand.Parameters[11].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[12].Value = ((string)(Original_Статус));
+                this.Adapter.UpdateCommand.Parameters[12].Value = ((string)(Original_Блюдо));
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 

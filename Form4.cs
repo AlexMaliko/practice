@@ -50,5 +50,15 @@ namespace WindowsFormsApp1
             this.составBindingSource.EndEdit();
             this.составTableAdapter.Update(this.dbDataSet.Состав);
         }
+
+        private void сменыDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.составTableAdapter.Update(this.dbDataSet.Состав);
+        }
     }
 }
